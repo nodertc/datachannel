@@ -1,0 +1,46 @@
+{
+  "name": "@nodertc/datachannel",
+  "version": "0.0.0",
+  "description": "WebRTC Data Channel Establishment Protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodertc/datachannel.git"
+  },
+  "keywords": [
+    "nodertc",
+    "webrtc",
+    "datachannel"
+  ],
+  "author": "Dmitriy Tsvettsikh <me@reklatsmasters.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodertc/datachannel/issues"
+  },
+  "engines": {
+    "node": ">=8.3"
+  },
+  "files": [
+    "src"
+  ],
+  "homepage": "https://github.com/nodertc/datachannel#readme",
+  "dependencies": {
+    "binary-data": "^0.5.0",
+    "is-stream": "^1.1.0",
+    "readable-stream": "^3.0.6"
+  },
+  "devDependencies": {
+    "@nodertc/eslint-config": "^0.2.1",
+    "eslint": "^5.8.0",
+    "prettier": "^1.14.3"
+  },
+  "eslintConfig": {
+    "extends": "@nodertc",
+    "rules": {
+      "no-underscore-dangle": "off"
+    }
+  }
+}
