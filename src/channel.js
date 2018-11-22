@@ -19,6 +19,7 @@ const _output = Symbol('output');
 const _protocol = Symbol('protocol');
 const _channelType = Symbol('channelType');
 const _negotiated = Symbol('negotiated');
+const _closed = Symbol('closed');
 
 const MESSAGE_ACK = Buffer.allocUnsafe(1);
 MESSAGE_ACK[0] = DATA_CHANNEL_ACK;
@@ -51,10 +52,11 @@ module.exports = class Channel extends Duplex {
     this[_input] = options.input;
     this[_output] = options.output;
     this[_reliability] = 0;
-    this[_priority] = 128;
+    this[_priority] = 0;
     this[_protocol] = '';
     this[_channelType] = options.channelType;
     this[_negotiated] = false;
+    this[_closed] = false;
 
     if (typeof options.label === 'string') {
       if (options.label.length > 0xffff) {
@@ -87,12 +89,30 @@ module.exports = class Channel extends Duplex {
     const handshake = new HandshakeMachine(this[_negotiated]);
     this[_handshake] = handshake;
 
+    let readableClosed = false;
+    let writableClosed = false;
+    const maybeClose = () => {
+      if (readableClosed && writableClosed && !this[_closed]) {
+        this.close();
+      }
+    };
+
     pipeline(this[_input], handshake, err => {
-      this.emit('error', err);
+      if (err) {
+        this.emit('error', err);
+      }
+
+      readableClosed = true;
+      maybeClose();
     });
 
-    finished(this[_input], () => {
-      this[_output].end();
+    finished(this[_output], err => {
+      if (err) {
+        this.emit('error', err);
+      }
+
+      writableClosed = true;
+      maybeClose();
     });
 
     handshake.on('data', data => this.push(data));
@@ -225,6 +245,28 @@ module.exports = class Channel extends Duplex {
       });
     }
   }
+
+  /**
+   * @private
+   * @param {Error} err
+   * @param {Function} callback
+   */
+  _destroy(err, callback) {
+    this.close();
+    callback();
+  }
+
+  /**
+   * Closes the channel.
+   */
+  close() {
+    if (this[_closed]) {
+      return;
+    }
+
+    this[_closed] = true;
+    this.emit('close');
+  }
 };
 
 /**
@@ -233,5 +275,5 @@ module.exports = class Channel extends Duplex {
  * @returns {boolean}
  */
 function isPriority(priority) {
-  return [128, 256, 512, 1024].includes(priority);
+  return [0, 128, 256, 512, 1024].includes(priority);
 }
