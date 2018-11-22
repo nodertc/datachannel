@@ -15,8 +15,8 @@ module.exports = {
  * @param {boolean} [options.negotiated = false]
  * @param {string} [options.label]
  * @param {string} [options.protocol]
- * @param {number} [options.priority = 128]
- * @param {boolean} [options.ordered = false] The type of the delivery.
+ * @param {number} [options.priority]
+ * @param {boolean} [options.ordered] The type of the delivery.
  * @param {number} [options.retries] The number of retransmissions.
  * @param {number} [options.lifetime] The maximum lifetime in milliseconds.
  * @returns {Channel}
