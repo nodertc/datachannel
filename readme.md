@@ -6,6 +6,7 @@
 [![node](https://img.shields.io/node/v/@nodertc/datachannel.svg)](https://www.npmjs.com/package/@nodertc/datachannel)
 [![license](https://img.shields.io/npm/l/@nodertc/datachannel.svg)](https://www.npmjs.com/package/@nodertc/datachannel)
 [![downloads](https://img.shields.io/npm/dm/@nodertc/datachannel.svg)](https://www.npmjs.com/package/@nodertc/datachannel)
+[![Coverage Status](https://coveralls.io/repos/github/nodertc/datachannel/badge.svg?branch=master)](https://coveralls.io/github/nodertc/datachannel?branch=master)
 [![telegram](https://img.shields.io/badge/telegram-nodertc-brightgreen.svg)](https://t.me/nodertc)
 
 WebRTC Data Channel Establishment Protocol. Supported RFC:

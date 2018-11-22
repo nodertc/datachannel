@@ -3,3 +3,9 @@ language: node_js
 node_js:
   - "10"
   - "8"
+
+script: npm run test-ci
+before_install:
+- npm install -g npm@6 coveralls
+after_script:
+- cat ./coverage/lcov.info | coveralls
