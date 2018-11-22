@@ -1,6 +1,6 @@
 {
   "name": "@nodertc/datachannel",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "WebRTC Data Channel Establishment Protocol",
   "main": "src/index.js",
   "scripts": {
