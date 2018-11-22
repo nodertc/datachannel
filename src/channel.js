@@ -3,14 +3,7 @@
 const { Duplex, pipeline, finished } = require('readable-stream');
 const { readable: isReadable, writable: isWritable } = require('is-stream');
 const { encode, createEncodeStream } = require('binary-data');
-const {
-  HandshakeMachine,
-  STATE_OPENING,
-  STATE_FINISHED,
-  EVENT_SEND_OPENING,
-  EVENT_SEND_ACK,
-  EVENT_GOT_OPENING,
-} = require('./handshake');
+const { HandshakeMachine } = require('./handshake');
 const {
   messageType: { DATA_CHANNEL_ACK, DATA_CHANNEL_OPEN },
   channelType,
@@ -104,11 +97,11 @@ module.exports = class Channel extends Duplex {
 
     handshake.on('data', data => this.push(data));
 
-    handshake.on(STATE_OPENING, () => {
+    handshake.once('final', () => {
       this.emit('open');
     });
 
-    handshake.once(EVENT_SEND_OPENING, () => {
+    handshake.once('postopen', () => {
       const packet = {
         messageType: DATA_CHANNEL_OPEN,
         channelType: this.type,
@@ -126,11 +119,11 @@ module.exports = class Channel extends Duplex {
       options.output.write(outstream.slice());
     });
 
-    handshake.once(EVENT_SEND_ACK, () => {
+    handshake.once('postack', () => {
       options.output.write(MESSAGE_ACK);
     });
 
-    handshake.once(EVENT_GOT_OPENING, packet => {
+    handshake.once('handshake', packet => {
       this[_label] = packet.label;
       this[_protocol] = packet.protocol;
       this[_priority] = packet.priority;
@@ -227,7 +220,7 @@ module.exports = class Channel extends Duplex {
     if (this[_handshake].ready) {
       this[_output].write(chunk, encoding, callback);
     } else {
-      this[_handshake].once(STATE_FINISHED, () => {
+      this[_handshake].once('final', () => {
         this[_output].write(chunk, encoding, callback);
       });
     }
