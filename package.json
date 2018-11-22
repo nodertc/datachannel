@@ -4,7 +4,10 @@
   "description": "WebRTC Data Channel Establishment Protocol",
   "main": "index.js",
   "scripts": {
-    "test": "npx eslint ."
+    "lint": "npx eslint .",
+    "cover": "npx jest --coverage",
+    "test": "npm run lint && npx jest",
+    "test-ci": "npm run lint && npm run cover"
   },
   "repository": {
     "type": "git",
@@ -35,12 +38,56 @@
   "devDependencies": {
     "@nodertc/eslint-config": "^0.2.1",
     "eslint": "^5.8.0",
+    "jest": "^23.6.0",
     "prettier": "^1.14.3"
   },
   "eslintConfig": {
     "extends": "@nodertc",
     "rules": {
       "no-underscore-dangle": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "test/**/*.js"
+        ],
+        "env": {
+          "jest": true
+        },
+        "settings": {
+          "import/resolver": {
+            "node": {
+              "moduleDirectory": [
+                "node_modules",
+                "src"
+              ]
+            }
+          }
+        },
+        "rules": {
+          "require-jsdoc": "off"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "modulePaths": [
+      "<rootDir>",
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/test/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "coverageDirectory": "<rootDir>/coverage",
+    "collectCoverageFrom": [
+      "**/src/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "cacheDirectory": ".jest-cache"
   }
 }
