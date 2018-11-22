@@ -1,6 +1,5 @@
 # @nodertc/datachannel
 
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
 [![Build Status](https://travis-ci.com/nodertc/datachannel.svg?branch=master)](https://travis-ci.com/nodertc/datachannel)
 [![npm](https://img.shields.io/npm/v/@nodertc/datachannel.svg)](https://www.npmjs.com/package/@nodertc/datachannel)
 [![node](https://img.shields.io/node/v/@nodertc/datachannel.svg)](https://www.npmjs.com/package/@nodertc/datachannel)
